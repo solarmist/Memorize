@@ -1,1 +1,19 @@
-"Hi" = "こんにちは";
+"Activities" = "活動";
+
+"Animals" = "動物";
+
+"Faces" = "顔";
+
+"Flags" = "フラグ";
+
+"Food" = "食品";
+
+"Halloween" = "ハロウィーン";
+
+"Hi Score: %lld" = "ハイスコア: %lld";
+
+"New Game" = "新しいゲーム";
+
+"Score: %lld" = "スコア: %lld";
+
+"You win" = "あなたの勝ち";
