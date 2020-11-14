@@ -9,7 +9,7 @@ import Foundation
 
 struct MemoryGame<CardContent: Equatable & Hashable> {
     public var unmatchedCardsRemaining: Int {cards.count - matchedCards.count}
-    private(set) var score = 0
+    private(set) var score: Int = 0
 
     private(set) var matchedCards = [Card]()
     private(set) var cards: [Card]
@@ -23,6 +23,10 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
                 cards[index].isFaceUp = (index == newValue)
             }
         }
+    }
+
+    mutating func reset() {
+        indexOfOneAndOnlyFaceUpCard = nil
     }
 
     mutating func choose(_ card: Card) {
@@ -60,14 +64,19 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
             cards[index].isMatched = true
 
             score += 2
-        } else if cards[index].indicesSeen.contains(index),
-                  cards[matchIndex].indicesSeen.contains(matchIndex) {
-            score -= 2
-        } else if cards[index].indicesSeen.contains(index) || cards[matchIndex].indicesSeen.contains(matchIndex) {
-            score -= 1
+
+            if cards[matchIndex].hasEarnedBonus || cards[index].hasEarnedBonus {
+                // Max of 2 * maxBonusPoints
+                score += Int(round(maxBonusPoints * cards[matchIndex].bonusRemaining))
+                score += Int(round(maxBonusPoints * cards[index].bonusRemaining))
+            }
+        } else {
+            score -= cards[matchIndex].wasSeen ? penalty : 0
+            score -= cards[index].wasSeen ? penalty : 0
         }
-        cards[matchIndex].indicesSeen.insert(matchIndex)
-        cards[index].indicesSeen.insert(index)
+        // Card A meet Card B and vice versa
+        cards[matchIndex].wasSeen = true
+        cards[index].wasSeen = true
         print("Add \(score - oldScore) points")
     }
 
@@ -105,7 +114,8 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
                 stopUsingBonusTime()
             }
         }
-        var indicesSeen = Set<Int>()
+        // Which cards have been up at the same time as Self
+        var wasSeen: Bool = false
 
         var content: CardContent
         // swiftlint:disable:next identifier_name

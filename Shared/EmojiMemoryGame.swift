@@ -39,6 +39,9 @@ class EmojiMemoryGame: ObservableObject {
     // MARK: - Intent(s)
 
     func newGame() {
+        // TODO: - Make the cards hidden before having the new game.
+        game.reset()
+
         var (_, theme) = themes.randomElement()!
         theme.icons.shuffle()
         primaryColor = theme.primaryColor
@@ -65,7 +68,7 @@ struct Theme<Fill: ShapeStyle> {
     var randomizePairs: Bool
     var pairs: Int {randomizePairs ? Int.random(in: 2...icons.count) : icons.count}
 }
-// LinearGradient, RadialGradient or AngularGradient
+
 let themes = [  // Each of these must be at least 8 emoji long
     "Halloween": Theme(
         name: LocalizedStringKey("Halloween"),

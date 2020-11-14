@@ -36,11 +36,8 @@ struct EmojiMemoryGameView: View {
 
                 }
             } else {
-                GeometryReader { geometry in
-                    Text("You win")
-                        .font(Font.system(size: min(geometry.size.width, geometry.size.height)))
-                        .foregroundColor(gameView.secondaryColor)
-                }
+                Text("You win")
+                    .foregroundColor(gameView.secondaryColor)
             }
 
             Divider()
@@ -115,7 +112,8 @@ struct CardView: View {
 
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        if (cardIsStillAvailable && card.isFaceUp) ||
+        // This needs to be a , not an && because swift doesn't shortcut &&
+        if cardIsStillAvailable, card.isFaceUp ||
            !card.isMatched {
             ZStack {
                 Group {
