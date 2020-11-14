@@ -36,7 +36,7 @@ struct Grid<Item, ID, ItemView>: View where ID: Hashable, ItemView: View {
 
     // Split these up so we don't have escaping closures like geometry escaping into this func
     private func body(for layout: GridLayout) -> some View {
-        return ForEach(items.indices) { index in
+        return ForEach(items.indices, id: \.self) { index in
             body(for: index, in: layout)
         }
     }

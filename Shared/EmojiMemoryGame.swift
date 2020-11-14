@@ -24,8 +24,8 @@ class EmojiMemoryGame: ObservableObject {
     }
 
     // MARK: - UI Settings
-    private(set) var primaryColor: Color = Color.orange
-    private(set) var secondaryColor: Color = Color.black
+    private(set) var primaryColor: Color = Color.gray
+    private(set) var secondaryColor: Color = Color.gray
     private(set) var themeName: LocalizedStringKey = "Default"
 
     // MARK: - Access to the Model

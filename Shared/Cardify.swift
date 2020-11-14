@@ -7,51 +7,66 @@
 
 import SwiftUI
 
-struct Cardify: ViewModifier {
-    var isFaceUp: Bool
-    var primaryColor: Color = Color.orange
-    var secondaryColor: Color = Color.black
+struct Cardify: AnimatableModifier {
+    var rotation: Double = 0
+    var isFaceUp: Bool {rotation < 90}
+    var animatableData: Double {
+        get { rotation }
+        set { rotation = newValue}
+    }
+    var fillStyle: Gradient {Gradient(colors: [primaryColor, secondaryColor])}
+    var primaryColor: Color
+    var secondaryColor: Color
 
+    init(isFaceUp: Bool,
+         primaryColor: Color = Color.white,
+         secondaryColor: Color = Color.white
+    ) {
+        rotation = isFaceUp ? 0 : 180
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
+    }
+    
     func body(content: Content) -> some View {
-            ZStack {
-                if isFaceUp {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill(primaryColor).opacity(0.6)
-                    RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: borderThickness)
-                    content.accentColor(primaryColor)
-                } else {
-                    Group {
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .fill(LinearGradient(gradient: Gradient(colors: [primaryColor, secondaryColor]),
-                                                 startPoint: .bottomTrailing,
-                                                 endPoint: .topLeading))
-                        RoundedRectangle(cornerRadius: cornerRadius).stroke(
-                            LinearGradient(gradient: Gradient(colors: [secondaryColor, primaryColor]),
-                                           startPoint: .topTrailing,
-                                           endPoint: .bottomLeading),
-                            lineWidth: borderThickness)
+        ZStack {
+            // Card front
+            Group {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(Color.white)
+                content
+                    .accentColor(primaryColor)
 
-                    }
-                }
+            }.opacity(isFaceUp ? show : hide)
+            // Card back
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(LinearGradient(gradient: fillStyle,
+                                     startPoint: .topLeading,
+                                     endPoint: .bottomTrailing))
+                .opacity(isFaceUp ? hide : show)
+            // Border
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .stroke(
+                    LinearGradient(gradient: fillStyle,
+                                   startPoint: .bottomTrailing,
+                                   endPoint: .topLeading),
+                    lineWidth: borderThickness)
         }
         .aspectRatio(aspectRatio, contentMode: .fit)
         .foregroundColor(secondaryColor)
         .padding(borderPadding)
-        .rotation3DEffect(rotationDirection(), axis: rotationVector)
-        .animation(.default)
-//        .animation(Animation.easeInOut(duration: 3))
+        .transition(.identity)
+        .rotation3DEffect(Angle.degrees(rotation), axis: rotationVector)
     }
 
     // MARK: - Drawing Constants
+    private let hide: Double = 0
+    private let show: Double = 1
     private let aspectRatio: CGFloat = 2/3
     private let cornerRadius: CGFloat = 10
     private let borderPadding: CGFloat = 5
     private let borderThickness: CGFloat = 3
     // swiftlint:disable:next large_tuple
     private let rotationVector: (CGFloat, CGFloat, CGFloat) = (x: 0, y: 1, z: 0)
-
-    private func rotationDirection() -> Angle {
-        isFaceUp ? Angle(degrees: 0): Angle(degrees: 180)
-    }
 }
 
 extension View {

@@ -27,11 +27,19 @@ struct EmojiMemoryGameView: View {
             if gameView.remainingCards > 0 {
                 Grid(gameView.cards) { index in
                     CardView(index: index)
-                        .onTapGesture {gameView.choose(gameView.cards[index])}
+                        .onTapGesture {
+                            // https://swiftui-lab.com/swiftui-animations-part1/
+                            // Only those parameters that depend on a value changed inside the withAnimation closure will be animated
+                            withAnimation(.linear) { gameView.choose(gameView.cards[index]) }
+                        }
+
                 }
             } else {
                 Text("You win").foregroundColor(gameView.secondaryColor)
             }
+
+            Divider()
+
             ControlsView()
         }.environmentObject(gameView)
     }
@@ -61,7 +69,9 @@ struct ControlsView: View {
                              primaryColor: gameView.primaryColor,
                              secondaryColor: gameView.secondaryColor)
                     .frame(maxWidth: 100, maxHeight: 100)
-                    .onTapGesture {gameView.newGame()}
+                    .onTapGesture {
+                        withAnimation(.easeInOut) { gameView.newGame() }
+                    }
             }
             VStack {
                 Text("Hi Score: \(gameView.highScore)")
@@ -69,7 +79,8 @@ struct ControlsView: View {
             }.foregroundColor(gameView.secondaryColor)
         }
         .padding()
-        .animation(.default)
+        // For the roation
+//        .animation(.spring())
     }
 }
 
@@ -85,23 +96,65 @@ struct CardView: View {
         }
     }
 
+    @State private var animatedPercentBonusRemaining: Double = 0
+    private func startBonusTimeAnimation() {
+        animatedPercentBonusRemaining = gameView.cards[index].bonusRemaining
+        withAnimation(.linear(duration: gameView.cards[index].bonusTimeRemaining)) {
+            animatedPercentBonusRemaining = 0
+        }
+    }
+
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        if gameView.cards[index].isFaceUp ||
+        if index < gameView.cards.count, gameView.cards[index].isFaceUp ||
            !gameView.cards[index].isMatched {
             ZStack {
-                Pie(startAngle: Angle(degrees: 0),
-                    endAngle: Angle(degrees: Double.random(in: 0...360))).padding(5).opacity(0.4)
-                    Text(verbatim: gameView.cards[index].content)
-                        .font(Font.system(size: fontSize(for: size)))
+                Group {
+                    if gameView.cards[index].isConsumingBonusTime {
+                        Pie(startAngle: startAngle,
+                            endAngle: endAngle * -animatedPercentBonusRemaining)
+                            .onAppear {
+                                startBonusTimeAnimation()
+                            }
+                    } else {
+                        Pie(startAngle: startAngle,
+                            endAngle: endAngle * -gameView.cards[index].bonusRemaining)
+                    }
+                }
+//                .padding(5)
+                .transition(.identity)
+                .opacity(pieOpacity)
+
+                Text(verbatim: gameView.cards[index].content)
+                    .font(Font.system(size: fontSize(for: size)))
+                    .rotationEffect(gameView.cards[index].isMatched ? endAngle : startAngle)
+                    // TODO: - Capture all the magic numbers
+                    .animation(
+                        gameView.cards[index].isMatched
+                            ? Animation
+                                .linear(duration: rotationDuration)
+                                .repeatForever(autoreverses: false)
+                                .delay(rotationDelay)
+                            : .default)
             }
             .cardify(isFaceUp: gameView.cards[index].isFaceUp,
                     primaryColor: gameView.primaryColor,
                     secondaryColor: gameView.secondaryColor)
+            // Add or remove card animation
+            // TODO: This isn't animating correctly
+            .transition(AnyTransition.offset(x: cardOrigin.x, y: cardOrigin.y))
+            .animation(.linear)
         }
     }
 
     // MARK: - Drawing Constants
+    let startAngle = Angle.degrees(0)
+    let endAngle = Angle.degrees(360)
+    let cardOrigin = CGPoint(x: -500, y: -500)
+    let rotationDelay: Double = 0.25
+    let pieOpacity: Double = 0.4
+    let rotationDuration: Double = 1
+
     private func fontSize(for size: CGSize) -> CGFloat {
         // % of the smaller dimension
         min(size.height, size.width) * 0.6

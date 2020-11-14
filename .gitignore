@@ -3,3 +3,4 @@ Pods
 *xcworkspace
 // Ignore because it contains the secret key
 .bartycrouch.toml
+*xcuserdata*
