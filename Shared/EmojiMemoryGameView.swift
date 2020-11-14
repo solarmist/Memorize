@@ -36,7 +36,11 @@ struct EmojiMemoryGameView: View {
 
                 }
             } else {
-                Text("You win").foregroundColor(gameView.secondaryColor)
+                GeometryReader { geometry in
+                    Text("You win")
+                        .font(Font.system(size: min(geometry.size.width, geometry.size.height)))
+                        .foregroundColor(gameView.secondaryColor)
+                }
             }
 
             Divider()
@@ -145,7 +149,6 @@ struct CardView: View {
             // Add or remove card animation
             // TODO: This isn't animating correctly
             .transition(AnyTransition.offset(x: cardOrigin.x, y: cardOrigin.y))
-            .animation(.linear)
         }
     }
 

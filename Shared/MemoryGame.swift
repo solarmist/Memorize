@@ -30,13 +30,14 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
               !matchedCards.contains(cards[index]) else {
             return
         }
-        print("Card chosen: \(cards[index])")
 
         processPossibleMatch(index)
 
         if indexOfOneAndOnlyFaceUpCard != nil {
+            print("Flipping 2nd card: \(cards[index])")
             cards[index].isFaceUp = !cards[index].isFaceUp
         } else {
+            print("Choosing 1st card: \(cards[index])")
             indexOfOneAndOnlyFaceUpCard = index
         }
     }
@@ -48,11 +49,12 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
               matchIndex != index else {
             return
         }
+        let oldScore = score
 
         if cards[matchIndex].content == cards[index].content {
-            print("Found a match: \(unmatchedCardsRemaining)")
             matchedCards.append(cards[matchIndex])
             matchedCards.append(cards[index])
+            print("Found a match: \(unmatchedCardsRemaining) cards remaining")
 
             cards[matchIndex].isMatched = true
             cards[index].isMatched = true
@@ -66,6 +68,7 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
         }
         cards[matchIndex].indicesSeen.insert(matchIndex)
         cards[index].indicesSeen.insert(index)
+        print("Add \(score - oldScore) points")
     }
 
     init(pairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
@@ -108,8 +111,6 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
         // swiftlint:disable:next identifier_name
         var id: Int
 
-        // can be zero which means "no bonus available" for this card
-        var bonusTimeLimit: TimeInterval = 6
         // how long this card has ever been face up
         private var faceUpTime: TimeInterval {
             if let lastFaceUpDate = self.lastFaceUpDate {
@@ -150,7 +151,16 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
             pastFaceUpTime = faceUpTime
             lastFaceUpDate = nil
         }
+
+        // MARK: - Card constants
+        // can be zero which means "no bonus available" for this card
+        var bonusTimeLimit: TimeInterval = 6
     }
+
+    // MARK: - Game constants
+    let maxBonusPoints: Double = 5  // per card
+    let penalty: Int = 1  // per card
+
 }
 
 extension Collection {
