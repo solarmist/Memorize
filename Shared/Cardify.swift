@@ -26,7 +26,7 @@ struct Cardify: AnimatableModifier {
         self.primaryColor = primaryColor
         self.secondaryColor = secondaryColor
     }
-    
+
     func body(content: Content) -> some View {
         ZStack {
             // Card front

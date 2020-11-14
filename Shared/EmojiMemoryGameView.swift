@@ -29,7 +29,8 @@ struct EmojiMemoryGameView: View {
                     CardView(index: index)
                         .onTapGesture {
                             // https://swiftui-lab.com/swiftui-animations-part1/
-                            // Only those parameters that depend on a value changed inside the withAnimation closure will be animated
+                            // Only those parameters that depend on a value changed
+                            // inside the withAnimation closure will be animated
                             withAnimation(.linear) { gameView.choose(gameView.cards[index]) }
                         }
 
@@ -128,7 +129,6 @@ struct CardView: View {
                 Text(verbatim: gameView.cards[index].content)
                     .font(Font.system(size: fontSize(for: size)))
                     .rotationEffect(gameView.cards[index].isMatched ? endAngle : startAngle)
-                    // TODO: - Capture all the magic numbers
                     .animation(
                         gameView.cards[index].isMatched
                             ? Animation

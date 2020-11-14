@@ -56,7 +56,7 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
 
             cards[matchIndex].isMatched = true
             cards[index].isMatched = true
-            // TODO: Use the bonus score
+
             score += 2
         } else if cards[index].indicesSeen.contains(index),
                   cards[matchIndex].indicesSeen.contains(matchIndex) {

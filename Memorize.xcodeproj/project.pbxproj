@@ -51,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).release.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		7733F6BB255A530600BE2569 /* MemorizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeApp.swift; sourceTree = "<group>"; };
 		7733F6BC255A530600BE2569 /* EmojiMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGameView.swift; sourceTree = "<group>"; };
 		7733F6BE255A530800BE2569 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -74,6 +75,7 @@
 		778D4A23255C796C00291B08 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		778D4A3A255CD49F00291B08 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		778D4A51255CE13A00291B08 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
+		E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				7733F6D6255A530800BE2569 /* Tests iOS */,
 				7733F6E1255A530800BE2569 /* Tests macOS */,
 				7733F6C4255A530800BE2569 /* Products */,
+				F75584E70AEB7B3A8A8260AF /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -192,6 +195,15 @@
 			path = "Support Files";
 			sourceTree = "<group>";
 		};
+		F75584E70AEB7B3A8A8260AF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */,
+				56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -199,6 +211,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7733F6F1255A530800BE2569 /* Build configuration list for PBXNativeTarget "Memorize (iOS)" */;
 			buildPhases = (
+				EA870B9EC4C27920C2D0213B /* [CP] Check Pods Manifest.lock */,
 				7733F6BF255A530800BE2569 /* Sources */,
 				7733F6C0255A530800BE2569 /* Frameworks */,
 				7733F6C1255A530800BE2569 /* Resources */,
@@ -367,7 +380,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		7733F716255A578F00BE2569 /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -385,7 +398,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"$PODS_ROOT/SwiftGen/bin/swiftgen\"\n";
+			shellScript = "\"$PODS_ROOT/SwiftGen/bin/swiftgen\"\n";
 		};
 		7733F717255A579B00BE2569 /* BartyCrouch */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -404,6 +417,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which bartycrouch > /dev/null; then\n    #bartycrouch update -x\n    bartycrouch lint -x\nelse\n    echo \"warning: BartyCrouch not installed, download it from https://github.com/Flinesoft/BartyCrouch\"\nfi\n";
+		};
+		EA870B9EC4C27920C2D0213B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Memorize (iOS)-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -599,6 +634,7 @@
 		};
 		7733F6F2255A530800BE2569 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -621,6 +657,7 @@
 		};
 		7733F6F3255A530800BE2569 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
