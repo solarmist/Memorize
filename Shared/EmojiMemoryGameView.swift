@@ -54,18 +54,19 @@ struct ControlsView: View {
 
     var body: some View {
         if verticalSizeClass == .compact {
-            VStack {content()}
+            VStack {controls()}
         } else {
-            HStack {content()}
+            HStack {controls()}
         }
     }
 
     @ViewBuilder
-    private func content() -> some View {
+    private func controls() -> some View {
         Group {
             VStack {
                 Text(gameView.themeName).foregroundColor(gameView.secondaryColor)
-                Text("New Game").multilineTextAlignment(.center)
+                Text("New Game")
+                    .multilineTextAlignment(.center)
                     .cardify(isFaceUp: true,
                              primaryColor: gameView.primaryColor,
                              secondaryColor: gameView.secondaryColor)
@@ -91,6 +92,9 @@ struct CardView: View {
     @EnvironmentObject var gameView: EmojiMemoryGame
     let index: Int
 
+    var cardIsStillAvailable: Bool {index < gameView.cards.count}
+    var card: MemoryGame<String>.Card {gameView.cards[index]}
+
     var body: some View {
         GeometryReader { geometry in
             body(for: geometry.size)
@@ -99,45 +103,43 @@ struct CardView: View {
 
     @State private var animatedPercentBonusRemaining: Double = 0
     private func startBonusTimeAnimation() {
-        animatedPercentBonusRemaining = gameView.cards[index].bonusRemaining
-        withAnimation(.linear(duration: gameView.cards[index].bonusTimeRemaining)) {
+        animatedPercentBonusRemaining = card.bonusRemaining
+        withAnimation(.linear(duration: card.bonusTimeRemaining)) {
             animatedPercentBonusRemaining = 0
         }
     }
 
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        if index < gameView.cards.count, gameView.cards[index].isFaceUp ||
-           !gameView.cards[index].isMatched {
+        if (cardIsStillAvailable && card.isFaceUp) ||
+           !card.isMatched {
             ZStack {
                 Group {
-                    if gameView.cards[index].isConsumingBonusTime {
+                    if card.isConsumingBonusTime {
                         Pie(startAngle: startAngle,
                             endAngle: endAngle * -animatedPercentBonusRemaining)
-                            .onAppear {
-                                startBonusTimeAnimation()
-                            }
+                            .onAppear { startBonusTimeAnimation() }
                     } else {
                         Pie(startAngle: startAngle,
-                            endAngle: endAngle * -gameView.cards[index].bonusRemaining)
+                            endAngle: endAngle * -card.bonusRemaining)
                     }
                 }
 //                .padding(5)
                 .transition(.identity)
                 .opacity(pieOpacity)
 
-                Text(verbatim: gameView.cards[index].content)
+                Text(verbatim: card.content)
                     .font(Font.system(size: fontSize(for: size)))
-                    .rotationEffect(gameView.cards[index].isMatched ? endAngle : startAngle)
+                    .rotationEffect(card.isMatched ? endAngle : startAngle)
                     .animation(
-                        gameView.cards[index].isMatched
+                        card.isMatched
                             ? Animation
                                 .linear(duration: rotationDuration)
                                 .repeatForever(autoreverses: false)
                                 .delay(rotationDelay)
                             : .default)
             }
-            .cardify(isFaceUp: gameView.cards[index].isFaceUp,
+            .cardify(isFaceUp: card.isFaceUp,
                     primaryColor: gameView.primaryColor,
                     secondaryColor: gameView.secondaryColor)
             // Add or remove card animation
