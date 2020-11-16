@@ -1,2 +1,2 @@
-# Memorize
-CS193P - Spring 2020 for SwiftUI
+
+Reimplementation of https://github.com/solarmist/concentration in pure SwiftUI

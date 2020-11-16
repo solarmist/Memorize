@@ -17,7 +17,7 @@ translateMethodName = "translate"
 
 [update.translate]
 paths = "."
-secret = ""
+secret = "95e8bdf047d6482e814e737abe317562"
 sourceLocale = "en"
 
 [update.normalize]

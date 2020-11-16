@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		772760DD2563261800F4698D /* .bartycrouch.toml in Resources */ = {isa = PBXBuildFile; fileRef = 772760DC2563261800F4698D /* .bartycrouch.toml */; };
+		772760DE2563261800F4698D /* .bartycrouch.toml in Resources */ = {isa = PBXBuildFile; fileRef = 772760DC2563261800F4698D /* .bartycrouch.toml */; };
 		7733F6D8255A530800BE2569 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7733F6D7255A530800BE2569 /* Tests_iOS.swift */; };
 		7733F6E3255A530800BE2569 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7733F6E2255A530800BE2569 /* Tests_macOS.swift */; };
 		7733F6E7255A530800BE2569 /* MemorizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7733F6BB255A530600BE2569 /* MemorizeApp.swift */; };
@@ -51,7 +53,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).release.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		74EC886DDCEE784104272137 /* Pods-Memorize (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).release.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		772760DC2563261800F4698D /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; name = .bartycrouch.toml; path = Pods/.bartycrouch.toml; sourceTree = SOURCE_ROOT; };
 		7733F6BB255A530600BE2569 /* MemorizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeApp.swift; sourceTree = "<group>"; };
 		7733F6BC255A530600BE2569 /* EmojiMemoryGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGameView.swift; sourceTree = "<group>"; };
 		7733F6BE255A530800BE2569 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,7 +78,7 @@
 		778D4A23255C796C00291B08 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		778D4A3A255CD49F00291B08 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		778D4A51255CE13A00291B08 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
-		E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		F7B14F16CA9588294A1FD813 /* Pods-Memorize (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memorize (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Memorize (iOS)/Pods-Memorize (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +201,9 @@
 		F75584E70AEB7B3A8A8260AF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */,
-				56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */,
+				772760DC2563261800F4698D /* .bartycrouch.toml */,
+				F7B14F16CA9588294A1FD813 /* Pods-Memorize (iOS).debug.xcconfig */,
+				74EC886DDCEE784104272137 /* Pods-Memorize (iOS).release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -335,6 +339,7 @@
 			files = (
 				7733F6ED255A530800BE2569 /* Assets.xcassets in Resources */,
 				7733F740255A5EF600BE2569 /* Localizable.strings in Resources */,
+				772760DD2563261800F4698D /* .bartycrouch.toml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +349,7 @@
 			files = (
 				7733F6EE255A530800BE2569 /* Assets.xcassets in Resources */,
 				7733F741255A5EF600BE2569 /* Localizable.strings in Resources */,
+				772760DE2563261800F4698D /* .bartycrouch.toml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,7 +640,7 @@
 		};
 		7733F6F2255A530800BE2569 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2DA34C698C0857B94EAB71E /* Pods-Memorize (iOS).debug.xcconfig */;
+			baseConfigurationReference = F7B14F16CA9588294A1FD813 /* Pods-Memorize (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -657,7 +663,7 @@
 		};
 		7733F6F3255A530800BE2569 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56CF05ADA626BD28450E6F6C /* Pods-Memorize (iOS).release.xcconfig */;
+			baseConfigurationReference = 74EC886DDCEE784104272137 /* Pods-Memorize (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
