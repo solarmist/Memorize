@@ -8,6 +8,40 @@
 //
 import SwiftUI
 
+let themes: [String: Theme] = [
+    // Each of these must be at least 8 emoji long
+    "Halloween": Theme(
+        name: ("Halloween"),
+        icons: "🦇😱🙀😈🎃👻🍭🍬💀👺👽🕸🤖🧛🏻",
+        primaryColor: UIColor.orange,
+        secondaryColor: UIColor.black),
+    "Food": Theme(
+        name: ("Food"),
+        icons: "🍎🥑🍠🥞🍕🥪🌮🍖🥝🥗🌭🍜🍚🍙🍟",
+        primaryColor: UIColor.red,
+        secondaryColor: UIColor.green),
+    "Faces": Theme(
+        name: ("Faces"),
+        icons: "😀☺️😍😭🥶😡🤢🥴🤑🤐😵😱",
+        primaryColor: UIColor.yellow,
+        secondaryColor: UIColor.brown),
+    "Animals": Theme(
+        name: ("Animals"),
+        icons: "🐥🐒🐷🐹🐭🐶🐨🐸🐍🦀🐡🦐🦂🕷",
+        primaryColor: UIColor.brown,
+        secondaryColor: UIColor.purple),
+    "Flags": Theme(
+        name: ("Flags"),
+        icons: "🇦🇽🇧🇩🇦🇮🇦🇶🇨🇦🇨🇻🇵🇫🇫🇴🇯🇵🇮🇩🇱🇧🇰🇵🇳🇴🇹🇿🇺🇸🇹🇴🇻🇳🇬🇧",
+        primaryColor: UIColor.white,
+        secondaryColor: UIColor.red),
+    "Activities": Theme(
+        name: ("Activities"),
+        icons: "🤸🏋️🧘🤽🏊🏄🏌️🤾🚴🚣🧗",
+        primaryColor: UIColor.yellow,
+        secondaryColor: UIColor.blue)
+]
+
 class EmojiMemoryGame: ObservableObject {
     @Published private(set) var game: MemoryGame<String>
 
@@ -21,6 +55,7 @@ class EmojiMemoryGame: ObservableObject {
         game = MemoryGame<String>(
             pairsOfCards: theme.pairs,
             cardContentFactory: {pairIndex in theme.icons[pairIndex]})
+        print("\(theme.json?.utf8 ?? "nil"))")
     }
 
     // MARK: - UI Settings
@@ -51,6 +86,7 @@ class EmojiMemoryGame: ObservableObject {
         game = MemoryGame<String>(
             pairsOfCards: theme.pairs,
             cardContentFactory: {pairIndex in theme.icons[pairIndex]})
+        print("\(theme.json?.utf8 ?? "nil"))")
     }
 
     func choose(_ card: MemoryGame<String>.Card) {
@@ -60,50 +96,88 @@ class EmojiMemoryGame: ObservableObject {
 
 }
 
-struct Theme<Fill: ShapeStyle> {
-    var name: LocalizedStringKey
+struct Theme: Hashable, Codable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return (lhs.name == rhs.name &&
+                lhs.icons == rhs.icons &&
+                lhs.primaryColor == rhs.primaryColor &&
+                lhs.secondaryColor == rhs.secondaryColor &&
+                lhs.pairs == rhs.pairs
+        )
+    }
+
+    init(
+        name: String,
+        icons: String,
+        primaryColor: UIColor,
+        secondaryColor: UIColor
+    ) {
+        self.rawName = name
+        self.icons = icons.map(String.init)
+        self.primaryRGB = primaryColor.rgb
+        self.secondaryRGB = secondaryColor.rgb
+    }
+
+    init?(json: Data?) throws {
+        if json != nil, let newEmojiArt = try? JSONDecoder().decode(Theme.self, from: json!) {
+            self = newEmojiArt
+        } else {
+            // Only return nil if it fails to load
+            return nil
+        }
+    }
+
+    var json: Data? {
+        try? JSONEncoder().encode(self)
+    }
+
+    var rawName: String
     var icons: [String]
-    var primaryColor: Fill
-    var secondaryColor: Fill
-    var randomizePairs: Bool
-    var pairs: Int {randomizePairs ? Int.random(in: 2...icons.count) : icons.count}
+    var primaryRGB: UIColor.RGB
+    var secondaryRGB: UIColor.RGB
+
+    var pairs: Int { icons.count }
+    var name: LocalizedStringKey { LocalizedStringKey(rawName) }
+    var primaryColor: Color { Color.init(primaryRGB) }
+    var secondaryColor: Color { Color.init(secondaryRGB) }
+
 }
 
-let themes = [  // Each of these must be at least 8 emoji long
-    "Halloween": Theme(
-        name: LocalizedStringKey("Halloween"),
-        icons: "🦇,😱,🙀,😈,🎃,👻,🍭,🍬,💀,👺,👽,🕸,🤖,🧛🏻".components(separatedBy: ","),
-        primaryColor: Color.orange,
-        secondaryColor: Color.black,
-        randomizePairs: true),
-    "Food": Theme(
-        name: LocalizedStringKey("Food"),
-        icons: "🍎,🥑,🍠,🥞,🍕,🥪,🌮,🍖,🥝,🥗,🌭,🍜,🍚,🍙,🍟".components(separatedBy: ","),
-        primaryColor: Color.red,
-        secondaryColor: Color.green,
-        randomizePairs: false),
-    "Faces": Theme(
-        name: LocalizedStringKey("Faces"),
-        icons: "😀,☺️,😍,😭,🥶,😡,🤢,🥴,🤑,🤐,😵,😱".components(separatedBy: ","),
-        primaryColor: Color.yellow,
-        secondaryColor: Color.pink,
-        randomizePairs: false),
-    "Animals": Theme(
-        name: LocalizedStringKey("Animals"),
-        icons: "🐥,🐒,🐷,🐹,🐭,🐶,🐨,🐸,🐍,🦀,🐡,🦐,🦂,🕷".components(separatedBy: ","),
-        primaryColor: Color.pink,
-        secondaryColor: Color.purple,
-        randomizePairs: false),
-    "Flags": Theme(
-        name: LocalizedStringKey("Flags"),
-        icons: "🇦🇽,🇧🇩,🇦🇮,🇦🇶,🇨🇦,🇨🇻,🇵🇫,🇫🇴,🇯🇵,🇮🇩,🇱🇧,🇰🇵,🇳🇴,🇹🇿,🇺🇸,🇹🇴,🇻🇳,🇬🇧".components(separatedBy: ","),
-        primaryColor: Color.white,
-        secondaryColor: Color.red,
-        randomizePairs: true),
-    "Activities": Theme(
-        name: LocalizedStringKey("Activities"),
-        icons: "🤸,🏋️,🧘,🤽,🏊,🏄,🏌️,🤾,🚴,🚣,🧗".components(separatedBy: ","),
-        primaryColor: Color.yellow,
-        secondaryColor: Color.blue,
-        randomizePairs: false)
-]
+extension Color {
+    init(_ rgb: UIColor.RGB) {
+        self.init(UIColor(rgb))
+    }
+}
+
+extension UIColor {
+    public struct RGB: Hashable, Codable {
+        var red: CGFloat
+        var green: CGFloat
+        var blue: CGFloat
+        var alpha: CGFloat
+    }
+
+    convenience init(_ rgb: RGB) {
+        self.init(red: rgb.red,
+                  green: rgb.green,
+                  blue: rgb.blue,
+                  alpha: rgb.alpha)
+    }
+
+    public var rgb: RGB {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return RGB(red: red,
+                   green: green,
+                   blue: blue,
+                   alpha: alpha)
+    }
+}
+
+extension Data {
+    // just a simple converter from a Data to a String
+    var utf8: String? { String(data: self, encoding: .utf8 ) }
+}

@@ -25,6 +25,7 @@ struct Cardify: AnimatableModifier {
         rotation = isFaceUp ? 0 : 180
         self.primaryColor = primaryColor
         self.secondaryColor = secondaryColor
+        print(fillStyle)
     }
 
     func body(content: Content) -> some View {

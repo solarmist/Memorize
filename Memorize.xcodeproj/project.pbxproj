@@ -422,7 +422,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which bartycrouch > /dev/null; then\n    #bartycrouch update -x\n    bartycrouch lint -x\nelse\n    echo \"warning: BartyCrouch not installed, download it from https://github.com/Flinesoft/BartyCrouch\"\nfi\n";
+			shellScript = "# \"$PODS_ROOT/BartyCrouch/bartycrouch\" update -x\n#bartycrouch update -x\n\"$PODS_ROOT/BartyCrouch/bartycrouch\" lint -x\n";
 		};
 		EA870B9EC4C27920C2D0213B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

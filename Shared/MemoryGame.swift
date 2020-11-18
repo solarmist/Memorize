@@ -64,7 +64,6 @@ struct MemoryGame<CardContent: Equatable & Hashable> {
             cards[index].isMatched = true
 
             score += 2
-
             if cards[matchIndex].hasEarnedBonus || cards[index].hasEarnedBonus {
                 // Max of 2 * maxBonusPoints
                 score += Int(round(maxBonusPoints * cards[matchIndex].bonusRemaining))
